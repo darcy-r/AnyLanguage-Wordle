@@ -1,51 +1,70 @@
 import { Cell } from '../grid/Cell'
 import { BaseModal } from './BaseModal'
+import { CONFIG } from '../../constants/config'
+import { useTranslation } from 'react-i18next'
+import 'i18next'
 
 type Props = {
   isOpen: boolean
   handleClose: () => void
 }
 
+interface Letter {
+  letter: string
+  highlight: boolean
+}
+
 export const InfoModal = ({ isOpen, handleClose }: Props) => {
+  const { t } = useTranslation()
+  const firstExampleWord: Letter[] = t('firstExampleWord', {
+    returnObjects: true,
+  })
+  const secondExampleWord: Letter[] = t('secondExampleWord', {
+    returnObjects: true,
+  })
+  const thirdExampleWord: Letter[] = t('thirdExampleWord', {
+    returnObjects: true,
+  })
   return (
-    <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title={t('howToPlay')} isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500">
-        Guess the WORDLE in 6 tries. After each guess, the color of the tiles
-        will change to show how close your guess was to the word.
+        {t('instructions', { tries: CONFIG.tries })}
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="W" status="correct" />
-        <Cell value="E" />
-        <Cell value="A" />
-        <Cell value="R" />
-        <Cell value="Y" />
+        {Array.isArray(firstExampleWord) &&
+          firstExampleWord.map((el: Letter) => {
+            if (el.highlight) {
+              return <Cell key={el.letter} value={el.letter} status="correct" />
+            } else {
+              return <Cell key={el.letter} value={el.letter} />
+            }
+          })}
       </div>
-      <p className="text-sm text-gray-500">
-        The letter W is in the word and in the correct spot.
-      </p>
+      <p className="text-sm text-gray-500">{t('correctSpotInstructions')}</p>
+      <div className="flex justify-center mb-1 mt-4">
+        {Array.isArray(secondExampleWord) &&
+          secondExampleWord.map((el) => {
+            if (el.highlight) {
+              return <Cell key={el.letter} value={el.letter} status="present" />
+            } else {
+              return <Cell key={el.letter} value={el.letter} />
+            }
+          })}
+      </div>
+      <p className="text-sm text-gray-500">{t('wrongSpotInstructions')}</p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="P" />
-        <Cell value="I" />
-        <Cell value="L" status="present" />
-        <Cell value="O" />
-        <Cell value="T" />
+        {Array.isArray(thirdExampleWord) &&
+          thirdExampleWord.map((el) => {
+            if (el.highlight) {
+              return <Cell key={el.letter} value={el.letter} status="absent" />
+            } else {
+              return <Cell key={el.letter} value={el.letter} />
+            }
+          })}
       </div>
-      <p className="text-sm text-gray-500">
-        The letter L is in the word but in the wrong spot.
-      </p>
-
-      <div className="flex justify-center mb-1 mt-4">
-        <Cell value="V" />
-        <Cell value="A" />
-        <Cell value="G" />
-        <Cell value="U" status="absent" />
-        <Cell value="E" />
-      </div>
-      <p className="text-sm text-gray-500">
-        The letter U is not in the word in any spot.
-      </p>
+      <p className="text-sm text-gray-500">{t('notInWordInstructions')}</p>
     </BaseModal>
   )
 }

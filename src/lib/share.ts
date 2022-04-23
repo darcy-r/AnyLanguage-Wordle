@@ -5,14 +5,15 @@ import { CONFIG } from '../constants/config'
 export const shareStatus = (guesses: string[][], lost: boolean) => {
   navigator.clipboard.writeText(
     CONFIG.language +
-      ' Wordle ' +
       solutionIndex +
       ' ' +
       `${lost ? 'X' : guesses.length}` +
       '/' +
       CONFIG.tries.toString() +
       '\n\n' +
-      generateEmojiGrid(guesses)
+      generateEmojiGrid(guesses) +
+      '\n\n' +
+      window.location.href.replace(`${window.location.protocol}//`, '')
   )
 }
 
