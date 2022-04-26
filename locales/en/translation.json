@@ -22,9 +22,12 @@
     "newWordCountdown": "New word in",
     "share": "Share",
     "winMessages": [
-        "Great Job!",
-        "Awesome",
-        "Well done!"
+        "Dhirrabuu! Great Job!",
+        "Gababan.gaan! Very good!",
+        "Giirr maaru! Well done!",
+        "Ngaawawu! That’s right!",
+        "Waa! Good work!",
+        "Yawu! Yes!",
     ],
     "firstExampleWord": [{
             "letter": "W",
