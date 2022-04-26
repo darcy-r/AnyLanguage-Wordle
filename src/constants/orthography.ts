@@ -15,9 +15,6 @@ export const ORTHOGRAPHY = [
   'u',
   'w',
   'y',
-  "'y",
-  "'",
-  '?',
 ]
 
 if (CONFIG.normalization) {
