@@ -16,7 +16,7 @@ i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     backend: {
-      loadPath: `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: `${process.env.PUBLIC_URL}/locales/en/{{ns}}.json`,
     },
     fallbackLng: CONFIG.defaultLang,
     debug: false,
