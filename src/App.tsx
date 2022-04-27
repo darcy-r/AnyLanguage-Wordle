@@ -15,6 +15,7 @@ import {
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
 } from './lib/localStorage'
+import { GLOSSES } from './constants/lexicon'
 
 import { CONFIG } from './constants/config'
 import ReactGA from 'react-ga'
@@ -22,7 +23,7 @@ import '@bcgov/bc-sans/css/BCSans.css'
 import './i18n'
 import { withTranslation, WithTranslation } from 'react-i18next'
 
-const ALERT_TIME_MS = 2000
+const ALERT_TIME_MS = 10000
 
 const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   const [currentGuess, setCurrentGuess] = useState<Array<string>>([])
@@ -67,7 +68,11 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     if (isGameWon) {
       const WIN_MESSAGES = t('winMessages', { returnObjects: true })
       setSuccessAlert(
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)] +
+          ' ' +
+          solution +
+          ' means ' +
+          translateSolution(solution)
       )
       setTimeout(() => {
         setSuccessAlert('')
@@ -94,6 +99,33 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
 
   const onDelete = () => {
     setCurrentGuess(currentGuess.slice(0, -1))
+  }
+
+  const checkWord = (word: Array<string>) => {
+    let vowels = ['a', 'i', 'u']
+    let permitted_finals = ['a', 'i', 'u', 'n', 'l', 'rr', 'y']
+    // check if word starts with vowel
+    if (vowels.includes(word[0])) {
+      return " A garay doesn't start with a vowel."
+    } else if (word[0] === 'l') {
+      return ' A garay doesn\'t start with "l".'
+    } else if (word[0] === 'd' && word[1] !== 'h') {
+      return ' A "d" at the start of a garay must be followed by "h".'
+    } else if (!permitted_finals.includes(word[4])) {
+      return 'A garay ends with vowels "a", "i", "u", or consonants "n", "l", "rr", "y".'
+    } else if (word[4] === 'r' && word[3] !== 'r') {
+      return ' A garay may end with "rr" but not "r" alone.'
+    }
+    return ''
+  }
+
+  const translateSolution = (word: string) => {
+    if (word in GLOSSES) {
+      return (
+        GLOSSES[word]['gloss'] + ' (' + GLOSSES[word]['part_of_speech'] + ')'
+      )
+    }
+    return ''
   }
 
   const onEnter = () => {
@@ -201,8 +233,18 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       </button>
 
       <Alert message={t('notEnoughLetters')} isOpen={isNotEnoughLetters} />
-      <Alert message={t('wordNotFound')} isOpen={isWordNotFoundAlertOpen} />
-      <Alert message={t('solution', { solution })} isOpen={isGameLost} />
+      <Alert
+        message={t('wordNotFound') + checkWord(currentGuess)}
+        isOpen={isWordNotFoundAlertOpen}
+      />
+      <Alert
+        message={
+          t('solution', { solution }) +
+          ', meaning ' +
+          translateSolution(solution)
+        }
+        isOpen={isGameLost}
+      />
       <Alert
         message={successAlert}
         isOpen={successAlert !== ''}

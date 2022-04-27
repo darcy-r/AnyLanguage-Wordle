@@ -4,7 +4,7 @@
     "enterKey": "Enter",
     "deleteKey": "Delete",
     "notEnoughLetters": "Not enough letters",
-    "wordNotFound": "Word not found",
+    "wordNotFound": "I don't know that garay!",
     "solution": "The word was {{solution}}",
     "gameCopied": "Game copied to clipboard",
     "howToPlay": "How to play",
