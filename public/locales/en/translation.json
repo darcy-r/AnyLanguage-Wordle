@@ -5,7 +5,7 @@
     "deleteKey": "Delete",
     "notEnoughLetters": "Not enough letters",
     "wordNotFound": "I don't know that garay!",
-    "solution": "The word was {{solution}}",
+    "solution": "Ngarragaa! Oh dear! The word was {{solution}}",
     "gameCopied": "Game copied to clipboard",
     "howToPlay": "How to play",
     "instructions": "Guess the word in {{tries}} tries. After each guess, the color of the tiles will change to show how close your guess was to the word.",
