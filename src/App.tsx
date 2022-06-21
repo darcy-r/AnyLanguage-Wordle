@@ -34,6 +34,8 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isI18nModalOpen, setIsI18nModalOpen] = useState(false)
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
+  const [isWordTranslationAlertOpen, setWordTranslationAlertOpen] =
+    useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
   const [successAlert, setSuccessAlert] = useState('')
   const [guesses, setGuesses] = useState<string[][]>(() => {
@@ -146,6 +148,13 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       }, ALERT_TIME_MS)
     }
     const winningWord = isWinningWord(currentGuess.join(''))
+    if (!winningWord) {
+      // if word is in list, but not the winning word, provide translation
+      setWordTranslationAlertOpen(true)
+      return setTimeout(() => {
+        setWordTranslationAlertOpen(false)
+      }, ALERT_TIME_MS)
+    }
 
     if (
       currentGuess.length === CONFIG.wordLength &&
@@ -236,6 +245,15 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       <Alert
         message={t('wordNotFound') + checkWord(currentGuess)}
         isOpen={isWordNotFoundAlertOpen}
+      />
+      <Alert
+        message={
+          'Good guess! ' +
+          currentGuess.join('') +
+          ' means ' +
+          translateSolution(currentGuess.join(''))
+        }
+        isOpen={isWordTranslationAlertOpen}
       />
       <Alert
         message={
