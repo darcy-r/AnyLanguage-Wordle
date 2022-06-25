@@ -250,8 +250,9 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
         message={
           'Good guess! ' +
           currentGuess.join('') +
-          ' means ' +
-          translateSolution(currentGuess.join(''))
+          ' means "' +
+          translateSolution(currentGuess.join('')) +
+          '"'
         }
         isOpen={isWordTranslationAlertOpen}
       />
