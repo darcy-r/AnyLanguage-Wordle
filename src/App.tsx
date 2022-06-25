@@ -151,7 +151,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     if (!winningWord) {
       // if word is in list, but not the winning word, provide translation
       setWordTranslationAlertOpen(true)
-      return setTimeout(() => {
+      setTimeout(() => {
         setWordTranslationAlertOpen(false)
       }, ALERT_TIME_MS)
     }
@@ -249,9 +249,9 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       <Alert
         message={
           'Good guess! ' +
-          currentGuess.join('') +
+          (guesses.at(-1) || ['']).join('') +
           ' means "' +
-          translateSolution(currentGuess.join('')) +
+          translateSolution((guesses.at(-1) || ['']).join('')) +
           '"'
         }
         isOpen={isWordTranslationAlertOpen}
